@@ -14,7 +14,7 @@ def act():
     for i,j in enumerate(pages):
         print(j.get())
         nm = j.get()
-        if(nm==1):
+        if(nm==0):
             pdf_writer.addPage(pdf_reader.getPage(i))
         else:
             continue
