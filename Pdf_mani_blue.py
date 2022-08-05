@@ -28,6 +28,7 @@ filepath_list = []
 savepath = ""
 pages_range = []
 pages = []
+check = False
 
 def change_mode():
     if switch_theme.get() == 1:
@@ -58,6 +59,8 @@ def clear_textbox():
     filepath_list.clear()
     pages.clear()
     pages_range.clear()
+    global check
+    check = False
 
 def remove_textbox():
     for widget in frame_center.winfo_children():
@@ -287,6 +290,29 @@ def page_selected():
                 box.insert(END,str(i+1)+", ")
             box.insert(END,"\n")
 
+def page_selected_for_Selected():
+    if(len(filepath_list)==0):
+        box.insert(END,"Provide path first...\n")
+        return
+
+    pdf_file = filepath_list[0]
+    global pdf_reader
+    pdf_reader = PdfFileReader(pdf_file)
+    global len_pdf
+    len_pdf = pdf_reader.numPages
+    global check 
+    if(check==False):
+        box.insert(END,"total No. of pages : "+str(len_pdf)+"\n")
+        box.insert(END,"x : Entered page is out of range..\n")
+        check = True
+    if(int(Ent.get())>len_pdf or int(Ent.get())<=0):
+        box.insert(END,"x ")
+        Ent.delete(0,END)
+    else:
+        pages.append(int(Ent.get())-1)
+        box.insert(END,str(Ent.get())+" ")
+        Ent.delete(0,END)
+
     
 def page_deselect():
     Ent.delete(0,END)
@@ -335,7 +361,31 @@ def split_range():
 #****************** Deletion ********************************
 
 def delete_chosen():
-    os.system('python Delete.py')
+    choose_folder = CTkButton(master=frame_center, text="Select pdf", command=pdf_chooser)
+    choose_folder.place(relx = 0.4, rely=0.2)
+
+    global Ent
+    Ent = Entry(master=frame_center,width=5)
+    Ent.place(relx=0.4,rely=0.3)
+
+    btn = tkinter.Button(master=frame_center, text="OK", command=page_selected_for_Selected)
+    btn.place(relx = 0.5, rely=0.3)
+
+    btn = tkinter.Button(master=frame_center, text="Clear", command=page_deselect)
+    btn.place(relx = 0.6, rely=0.3)
+
+    path_btn = CTkButton(master=frame_center, text="Save to", command=path_chooser)
+    path_btn.place(relx = 0.4, rely=0.4)
+
+    split_range_btn = CTkButton(master=frame_center, text="Delete", command=delete,fg_color="#4bad6b",hover_color="#9dccac")
+    split_range_btn.place(relx = 0.4, rely=0.5)
+
+    global box
+    box= CTkTextbox(master=frame_center,height=90,width=400,relief=SUNKEN)
+    box.place(relx = 0.5, rely=0.75,anchor=CENTER)
+
+    clear_btn = CTkButton(master=frame_center, text="Clear", command=clear_textbox,fg_color="#f24e71",hover_color="#e88ea1")
+    clear_btn.place(relx = 0.4, rely=0.92)
 
 
 def delete():
@@ -349,9 +399,9 @@ def delete():
     for i in range(len_pdf):
         if(i not in pages):
             pdf_writer.addPage(pdf_reader.getPage(i))
-    split_file = open(savepath+"\\splitByRange"+random_string()+".pdf",'wb')
+    split_file = open(savepath+"\\del_chosen_"+random_string()+".pdf",'wb')
     pdf_writer.write(split_file)
-    box.insert(END,"Pdf split sucessfully!!")
+    box.insert(END,"Pages deleted sucessfully!!")
     
 
 def page_selected():

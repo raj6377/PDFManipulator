@@ -4,7 +4,7 @@ import tkinter
 from tkinter import *
 
 # a = askopenfilename()
-pdf_file = open(askopenfilename(),'rb')
+pdf_file = open(askopenfilename(title="Select PDF Files",filetypes=(("PDF Files","*.pdf"),)),'rb')
 pdf_reader = PdfFileReader(pdf_file)
 pdf_writer = PdfFileWriter()
 len_pdf = pdf_reader.numPages
