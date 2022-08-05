@@ -239,7 +239,33 @@ def merge_chosen():
 # **************** PDF split *****************************
 
 def split_chosen():
-    os.system('python Split.py')
+    clear_all()
+    
+    choose_folder = CTkButton(master=frame_center, text="Select pdf", command=pdf_chooser)
+    choose_folder.place(relx = 0.4, rely=0.2)
+
+    global Ent
+    Ent = Entry(master=frame_center,width=5)
+    Ent.place(relx=0.4,rely=0.3)
+
+    btn = tkinter.Button(master=frame_center, text="OK", command=page_selected_for_Selected)
+    btn.place(relx = 0.5, rely=0.3)
+
+    btn = tkinter.Button(master=frame_center, text="Clear", command=page_deselect)
+    btn.place(relx = 0.6, rely=0.3)
+
+    path_btn = CTkButton(master=frame_center, text="Save to", command=path_chooser)
+    path_btn.place(relx = 0.4, rely=0.4)
+
+    split_range_btn = CTkButton(master=frame_center, text="Split by range", command=split,fg_color="#4bad6b",hover_color="#9dccac")
+    split_range_btn.place(relx = 0.4, rely=0.5)
+
+    global box
+    box= CTkTextbox(master=frame_center,height=90,width=400,relief=SUNKEN)
+    box.place(relx = 0.5, rely=0.75,anchor=CENTER)
+
+    clear_btn = CTkButton(master=frame_center, text="Clear", command=clear_textbox,fg_color="#f24e71",hover_color="#e88ea1")
+    clear_btn.place(relx = 0.4, rely=0.92) 
 
 
 def split():
@@ -253,7 +279,7 @@ def split():
     for i in range(len_pdf):
         if(i in pages):
             pdf_writer.addPage(pdf_reader.getPage(i))
-    split_file = open(savepath+"\\splitByRange"+random_string()+".pdf",'wb')
+    split_file = open(savepath+"\\splitByChosen_"+random_string()+".pdf",'wb')
     pdf_writer.write(split_file)
     box.insert(END,"Pdf split sucessfully!!")
     
