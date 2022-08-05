@@ -93,11 +93,20 @@ def clear_all():
 
 # ************************* Conversion ********************************
 def convert_chosen_docx():
+    if(len(filepath_list)==0):
+        box.insert(END,"Please choose File First !!\n")
+        return
+    if(len(savepath)==0):
+        box.insert(END,"Please choose destination directory first !!\n")
+        return
     for i in filepath_list:
         convert(i,savepath)
     box.insert(END,"Conversion successful !!")
 
 def convert_mass_docx():
+    if(len(savepath)==0):
+        box.insert(END,"Please provide path first !!\n")
+        return
     convert(savepath)
     box.insert(END,"Conversion successful !!")
 
@@ -150,6 +159,12 @@ def convert_chosen():
 
 # ***************** Merging Pdfs *************************
 def merge_chosen_pdfs():
+    if(len(filepath_list)==0):
+        box.insert(END,"Please choose File First !!\n")
+        return
+    if(len(savepath)==0):
+        box.insert(END,"Please choose destination directory first !!\n")
+        return
     merger = PdfMerger()
     for i in filepath_list:
         merger.append(i)
@@ -159,6 +174,9 @@ def merge_chosen_pdfs():
     pass
 
 def merge_mass_pdfs():
+    if(len(savepath)==0):
+        box.insert(END,"Please provide path first !!\n")
+        return
     merger = PdfMerger()
     files = glob.glob(savepath+"\\*.pdf")
     for i in files:
@@ -420,7 +438,7 @@ def About():
 
     lb1 = CTkLabel(master=frame_center,text="Project : PDF Manipulator \
             \n\nObjective : PDF Operations \
-            \n\nDeveloper : Rajshekhar Singh\
+            \n\nDeveloper : Rajshekhar, Benjamin\
             \n\nTechnology : Python-Tkinter\
             "
             ,text_font=("Times New Roman", 15,"italic"))
@@ -508,7 +526,7 @@ lb.place(relx = 0.35, rely= 0.05)
 
 lb1 = CTkLabel(master=frame_center,text="Project : PDF Manipulator \
             \n\nObjective : PDF Operations \
-            \n\nDeveloper : Rajshekhar Singh\
+            \n\nDeveloper : Rajshekhar, Benjamin\
             \n\nTechnology : Python-Tkinter\
             "
             ,text_font=("Times New Roman", 15,"italic"))
